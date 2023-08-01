@@ -74,16 +74,21 @@ The `custom_benchmark.py` file allows you to measure custom computations. In thi
 Example usage:
 
 ```python
-from custom_benchmark import CustomBenchmark
-
 def custom_hash_collision():
     collisions = 0
-    # Your custom computation here
-    # ...
+    hash_set = set()
+    
+    # Generate 10000 random strings and calculate their SHA-256 hash values
+    for i in range(10000):
+        data = ''.join(random.choices(string.ascii_letters + string.digits, k=10)).encode()
+        hash_value = hashlib.sha256(data).hexdigest()
+        
+        # Check for hash collisions
+        if hash_value in hash_set:
+            collisions += 1
+        hash_set.add(hash_value)
 
-if __name__ == "__main__":
-    custom_benchmark = CustomBenchmark(runs=5, number=1000)
-    custom_benchmark.measure_custom_counter(custom_hash_collision)
+    print(f"Number of hash collisions: {collisions}")
 ```
 
 ## Contributing
